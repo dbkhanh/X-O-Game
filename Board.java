@@ -84,7 +84,7 @@ public class Board extends JPanel {
         int w = getWidth()/3;
         int h = getHeight()/3;
         Graphics2D graphics2D = (Graphics2D) g;
-        graphics2D.setColor(Color.BLUE);
+        graphics2D.setColor(new Color(220, 237, 255));
 
         int k = 0;
         for(int i = 0; i < N; i++){
@@ -99,7 +99,7 @@ public class Board extends JPanel {
                 cell.setW(w);
                 cell.setH(h);
 
-                Color color = k%2 == 0? Color.BLUE: Color.RED;
+                Color color = k%2 == 0? new Color(220, 237, 255): new Color(130, 90, 91);
                 graphics2D.setColor(color);
                 graphics2D.fillRect(x,y,w,h);
 
