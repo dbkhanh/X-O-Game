@@ -13,6 +13,7 @@ public class Main {
     private static JLabel lblTime;
     private static Board board;
     private static JButton btnButton;
+    private static final String AI_PLAYER = "AI";
     public static void main(String[] args){
         JPanel jPanel = new JPanel();
         BoxLayout boxLayout = new BoxLayout(jPanel, BoxLayout.Y_AXIS);
@@ -75,10 +76,21 @@ public class Main {
     }
 
     private static void startGame(){
+        //Option for choosing X or O
         int choice = JOptionPane.showConfirmDialog(null,"O first?","O-X who goes first?",JOptionPane.YES_NO_OPTION);
-        board.reset();
+        //Option for choosing to play with bot
+        int robot = JOptionPane.showConfirmDialog(null, "Do you want to play with bot?", "Friends or Bot", JOptionPane.YES_NO_OPTION);
 
-        String currentPlayer = (choice == 0)? Cell.O_VALUE:Cell.X_VALUE;
+        String currentPlayer;
+        board.reset();
+        currentPlayer = (choice == 0)? Cell.O_VALUE:Cell.X_VALUE;
+        // If playing with bot, and bot goes first
+        if (robot == 0 && currentPlayer.equals(Cell.O_VALUE)) {
+            board.makeAIMove(currentPlayer);
+
+        }else if (robot == 0 && currentPlayer.equals(Cell.X_VALUE)){
+            board.makeAIMove(currentPlayer);
+        }
         board.setCurrentPlayer(currentPlayer);
 
         sec = 0;

@@ -5,6 +5,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Random;
 
 public class Board extends JPanel {
     private static final int N = 3;
@@ -18,6 +19,37 @@ public class Board extends JPanel {
     private Cell[][] matrix = new Cell[N][M];
     private String currentPlayer = Cell.EMPTY_VALUE;
     private EndGameListener endGameListener;
+    private static final String AI_PLAYER = "AI";
+
+    public void makeAIMove(String currentPlayer) {
+        // Generate a random move for the AI player
+        Random random = new Random();
+        int row, col;
+
+        do {
+            row = random.nextInt(N);
+            col = random.nextInt(M);
+        } while (!matrix[row][col].getValue().equals(Cell.EMPTY_VALUE));
+
+        // Set the AI player's move on the board
+        matrix[row][col].setValue(currentPlayer);
+        repaint();
+
+        // Check for game result
+        int result = checkWin(currentPlayer);
+        if (result == Board.NORMAL) {
+            currentPlayer = (currentPlayer.equals(Cell.X_VALUE)) ? Cell.O_VALUE : Cell.X_VALUE;
+            setCurrentPlayer(currentPlayer);
+        } else {
+            if (result == Board.WIN) {
+                JOptionPane.showMessageDialog(null, currentPlayer + " WINS");
+            } else if (result == Board.DRAW) {
+                JOptionPane.showMessageDialog(null, "DRAW");
+            }
+            currentPlayer = Cell.EMPTY_VALUE;
+            this.setCurrentPlayer(currentPlayer);
+        }
+    }
     public Board(String player){
         this();
         this.currentPlayer = player;
@@ -56,6 +88,9 @@ public class Board extends JPanel {
                                 }
                                 if(result == NORMAL){
                                     currentPlayer = currentPlayer.equals(Cell.O_VALUE)? Cell.X_VALUE: Cell.O_VALUE;
+                                    if(currentPlayer.equals(AI_PLAYER)){
+                                        makeAIMove(currentPlayer);
+                                    }
                                 }
                             }
                         }
@@ -84,7 +119,7 @@ public class Board extends JPanel {
         int w = getWidth()/3;
         int h = getHeight()/3;
         Graphics2D graphics2D = (Graphics2D) g;
-        graphics2D.setColor(Color.BLUE);
+        graphics2D.setColor(new Color(220, 237, 255));
 
         int k = 0;
         for(int i = 0; i < N; i++){
@@ -99,7 +134,7 @@ public class Board extends JPanel {
                 cell.setW(w);
                 cell.setH(h);
 
-                Color color = k%2 == 0? Color.BLUE: Color.RED;
+                Color color = k%2 == 0? new Color(220, 237, 255): new Color(130, 90, 91);
                 graphics2D.setColor(color);
                 graphics2D.fillRect(x,y,w,h);
 
