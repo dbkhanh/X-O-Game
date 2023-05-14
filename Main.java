@@ -76,22 +76,27 @@ public class Main {
     }
 
     private static void startGame(){
-        //Option for choosing X or O
-        int choice = JOptionPane.showConfirmDialog(null,"O first?","O-X who goes first?",JOptionPane.YES_NO_OPTION);
-        //Option for choosing to play with bot
+        // Option for choosing to play with bot
         int robot = JOptionPane.showConfirmDialog(null, "Do you want to play with bot?", "Friends or Bot", JOptionPane.YES_NO_OPTION);
 
         String currentPlayer;
         board.reset();
-        currentPlayer = (choice == 0)? Cell.O_VALUE:Cell.X_VALUE;
-        // If playing with bot, and bot goes first
-        if (robot == 0 && currentPlayer.equals(Cell.O_VALUE)) {
-            board.makeAIMove(currentPlayer);
 
-        }else if (robot == 0 && currentPlayer.equals(Cell.X_VALUE)){
-            board.makeAIMove(currentPlayer);
+        if (robot == 0) {
+            int turn = JOptionPane.showConfirmDialog(null, "Bot first?", "Does bot go first?", JOptionPane.YES_NO_OPTION);
+            if (turn == 0) {
+                currentPlayer = AI_PLAYER;  // Bot goes first
+                board.makeAIMove(currentPlayer);
+            } else {
+                currentPlayer = Cell.X_VALUE;  // Human goes first
+                board.setCurrentPlayer(currentPlayer);
+            }
+        } else {
+            // Option for choosing X or O
+            int choice = JOptionPane.showConfirmDialog(null, "O first?", "O-X who goes first?", JOptionPane.YES_NO_OPTION);
+            currentPlayer = (choice == 0) ? Cell.O_VALUE : Cell.X_VALUE;
+            board.setCurrentPlayer(currentPlayer);
         }
-        board.setCurrentPlayer(currentPlayer);
 
         sec = 0;
         lblTime.setText("0:0");
@@ -101,7 +106,7 @@ public class Main {
             @Override
             public void run() {
                 sec++;
-                String value = sec/60 + ":" + sec%60;
+                String value = sec / 60 + ":" + sec % 60;
                 lblTime.setText(value);
             }
         }, 1000, 1000);

@@ -49,6 +49,12 @@ public class Board extends JPanel {
             currentPlayer = Cell.EMPTY_VALUE;
             this.setCurrentPlayer(currentPlayer);
         }
+
+        // Change the current player if it was the bot's first move
+        if (currentPlayer.equals(AI_PLAYER)) {
+            currentPlayer = (currentPlayer.equals(Cell.X_VALUE)) ? Cell.O_VALUE : Cell.X_VALUE;
+            setCurrentPlayer(currentPlayer);
+        }
     }
     public Board(String player){
         this();
