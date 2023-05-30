@@ -13,7 +13,6 @@ public class Main {
     private static JLabel lblTime;
     private static Board board;
     private static JButton btnButton;
-    private static final String AI_PLAYER = "AI";
     public static void main(String[] args){
         JPanel jPanel = new JPanel();
         BoxLayout boxLayout = new BoxLayout(jPanel, BoxLayout.Y_AXIS);
@@ -73,30 +72,38 @@ public class Main {
 
         jFrame.setLocation(x, y);
         jFrame.setVisible(true);
+
+        ////////////////////////////////
+        // Ask if the user wants to play with the robot
+//        int robotChoice = JOptionPane.showConfirmDialog(null, "Do you want to play with the robot?", "Play with Robot", JOptionPane.YES_NO_OPTION);
+//
+//        if (robotChoice == JOptionPane.YES_OPTION) {
+//            // Ask if the robot should go first
+//            int robotFirstChoice = JOptionPane.showConfirmDialog(null, "Do you want the robot to go first?", "Robot First", JOptionPane.YES_NO_OPTION);
+//
+//            if (robotFirstChoice == JOptionPane.YES_OPTION) {
+//                // Robot goes first
+//                board.setCurrentPlayer(Cell.O_VALUE);
+//                if (board.getCurrentPlayer().equals(Cell.O_VALUE)) {
+//                    board.makeRobotMove();
+//                }
+//            } else {
+//                // Human goes first
+//                board.setCurrentPlayer(Cell.X_VALUE);
+//            }
+//        } else {
+//            // Human vs. Human
+//            board.setCurrentPlayer(Cell.X_VALUE);
+//        }
+
+        board.setCurrentPlayer(Cell.X_VALUE);
+
     }
 
-    private static void startGame(){
-        // Option for choosing to play with bot
-        int robot = JOptionPane.showConfirmDialog(null, "Do you want to play with bot?", "Friends or Bot", JOptionPane.YES_NO_OPTION);
-
-        String currentPlayer;
-        board.reset();
-
-        if (robot == 0) {
-            int turn = JOptionPane.showConfirmDialog(null, "Bot first?", "Does bot go first?", JOptionPane.YES_NO_OPTION);
-            if (turn == 0) {
-                currentPlayer = AI_PLAYER;  // Bot goes first
-                board.makeAIMove(currentPlayer);
-            } else {
-                currentPlayer = Cell.X_VALUE;  // Human goes first
-                board.setCurrentPlayer(currentPlayer);
-            }
-        } else {
-            // Option for choosing X or O
-            int choice = JOptionPane.showConfirmDialog(null, "O first?", "O-X who goes first?", JOptionPane.YES_NO_OPTION);
-            currentPlayer = (choice == 0) ? Cell.O_VALUE : Cell.X_VALUE;
-            board.setCurrentPlayer(currentPlayer);
-        }
+    private static void startGame() {
+        int choice = JOptionPane.showConfirmDialog(null, "Do you want X to go first?", "Choose Player", JOptionPane.YES_NO_OPTION);
+        String currentPlayer = (choice == JOptionPane.YES_OPTION) ? Cell.X_VALUE : Cell.O_VALUE;
+        board.setCurrentPlayer(currentPlayer);
 
         sec = 0;
         lblTime.setText("0:0");
