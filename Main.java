@@ -72,37 +72,13 @@ public class Main {
 
         jFrame.setLocation(x, y);
         jFrame.setVisible(true);
-
-        ////////////////////////////////
-        // Ask if the user wants to play with the robot
-//        int robotChoice = JOptionPane.showConfirmDialog(null, "Do you want to play with the robot?", "Play with Robot", JOptionPane.YES_NO_OPTION);
-//
-//        if (robotChoice == JOptionPane.YES_OPTION) {
-//            // Ask if the robot should go first
-//            int robotFirstChoice = JOptionPane.showConfirmDialog(null, "Do you want the robot to go first?", "Robot First", JOptionPane.YES_NO_OPTION);
-//
-//            if (robotFirstChoice == JOptionPane.YES_OPTION) {
-//                // Robot goes first
-//                board.setCurrentPlayer(Cell.O_VALUE);
-//                if (board.getCurrentPlayer().equals(Cell.O_VALUE)) {
-//                    board.makeRobotMove();
-//                }
-//            } else {
-//                // Human goes first
-//                board.setCurrentPlayer(Cell.X_VALUE);
-//            }
-//        } else {
-//            // Human vs. Human
-//            board.setCurrentPlayer(Cell.X_VALUE);
-//        }
-
-        board.setCurrentPlayer(Cell.X_VALUE);
-
     }
 
-    private static void startGame() {
-        int choice = JOptionPane.showConfirmDialog(null, "Do you want X to go first?", "Choose Player", JOptionPane.YES_NO_OPTION);
-        String currentPlayer = (choice == JOptionPane.YES_OPTION) ? Cell.X_VALUE : Cell.O_VALUE;
+    private static void startGame(){
+        int choice = JOptionPane.showConfirmDialog(null,"O first?","O-X who goes first?",JOptionPane.YES_NO_OPTION);
+        board.reset();
+
+        String currentPlayer = (choice == 0)? Cell.O_VALUE:Cell.X_VALUE;
         board.setCurrentPlayer(currentPlayer);
 
         sec = 0;
@@ -113,7 +89,7 @@ public class Main {
             @Override
             public void run() {
                 sec++;
-                String value = sec / 60 + ":" + sec % 60;
+                String value = sec/60 + ":" + sec%60;
                 lblTime.setText(value);
             }
         }, 1000, 1000);

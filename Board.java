@@ -5,6 +5,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Random;
 
 public class Board extends JPanel {
     private static final int N = 3;
@@ -18,11 +19,46 @@ public class Board extends JPanel {
     private Cell[][] matrix = new Cell[N][M];
     private String currentPlayer = Cell.EMPTY_VALUE;
     private EndGameListener endGameListener;
-    private Robot robot;
+    private static final String AI_PLAYER = "AI";
+
+    public void makeAIMove(String currentPlayer) {
+        // Generate a random move for the AI player
+        Random random = new Random();
+        int row, col;
+
+        do {
+            row = random.nextInt(N);
+            col = random.nextInt(M);
+        } while (!matrix[row][col].getValue().equals(Cell.EMPTY_VALUE));
+
+        // Set the AI player's move on the board
+        matrix[row][col].setValue(currentPlayer);
+        repaint();
+
+        // Check for game result
+        int result = checkWin(currentPlayer);
+        if (result == Board.NORMAL) {
+            currentPlayer = (currentPlayer.equals(Cell.X_VALUE)) ? Cell.O_VALUE : Cell.X_VALUE;
+            setCurrentPlayer(currentPlayer);
+        } else {
+            if (result == Board.WIN) {
+                JOptionPane.showMessageDialog(null, currentPlayer + " WINS");
+            } else if (result == Board.DRAW) {
+                JOptionPane.showMessageDialog(null, "DRAW");
+            }
+            currentPlayer = Cell.EMPTY_VALUE;
+            this.setCurrentPlayer(currentPlayer);
+        }
+
+        // Change the current player if it was the bot's first move
+        if (currentPlayer.equals(AI_PLAYER)) {
+            currentPlayer = (currentPlayer.equals(Cell.X_VALUE)) ? Cell.O_VALUE : Cell.X_VALUE;
+            setCurrentPlayer(currentPlayer);
+        }
+    }
     public Board(String player){
         this();
         this.currentPlayer = player;
-        this.robot = new Robot();
     }
     public Board(){
         this.initMatrix();
@@ -58,6 +94,9 @@ public class Board extends JPanel {
                                 }
                                 if(result == NORMAL){
                                     currentPlayer = currentPlayer.equals(Cell.O_VALUE)? Cell.X_VALUE: Cell.O_VALUE;
+                                    if(currentPlayer.equals(AI_PLAYER)){
+                                        makeAIMove(currentPlayer);
+                                    }
                                 }
                             }
                         }
@@ -72,55 +111,6 @@ public class Board extends JPanel {
         }catch(Exception e) {
             e.printStackTrace();
         }
-    }
-    public void makeRobotMove() {
-        if (currentPlayer.equals(Cell.O_VALUE) && robot!= null) {
-            robot.makeMove(this); // Call the Robot's makeMove method
-        }
-    }
-    public void makeMove(int row, int col, String player) {
-        if (isValidMove(row, col)) {
-            repaint();
-            int result = checkWin(player);
-            if (endGameListener != null) {
-                endGameListener.end(player, result);
-            }
-
-            if (result == NORMAL) {
-                currentPlayer = currentPlayer.equals(Cell.O_VALUE) ? Cell.X_VALUE : Cell.O_VALUE;
-
-                if (currentPlayer.equals(Cell.O_VALUE)) {
-                    makeRobotMove();
-                }
-            }
-        }
-    }
-    public boolean isValidMove(int row, int col) {
-        if (row < 0 || row >= N || col < 0 || col >= M) {
-            return false; // Invalid row or column
-        }
-
-        Cell cell = matrix[row][col];
-        return cell.getValue().equals(Cell.EMPTY_VALUE); // Check if the cell is empty
-    }
-
-    public boolean isEmpty(int row, int col) {
-        if (row < 0 || row >= N || col < 0 || col >= M) {
-            return false; // Invalid row or column
-        }
-
-        Cell cell = matrix[row][col];
-        return cell.getValue().equals(Cell.EMPTY_VALUE); // Check if the cell is empty
-    }
-
-    public void undoMove(int row, int col) {
-        if (row < 0 || row >= N || col < 0 || col >= M) {
-            return; // Invalid row or column
-        }
-
-        Cell cell = matrix[row][col];
-        cell.setValue(Cell.EMPTY_VALUE); // Reset the cell value to empty
-        repaint();
     }
 
     private void initMatrix(){
