@@ -5,6 +5,9 @@
 This project demonstrates how to build a Tic-Tac-Toe game using Java, incorporating object-oriented programming principles to ensure a user-friendly and interactive experience.
 By leveraging Java's core concepts, including classes, objects, and inheritance, I carefully created the structure and functionality of the game.
 
+<img width="221" alt="image" src="https://github.com/dbkhanh/Tic-Tac-Toe/assets/107232612/5f1dba85-8283-4f34-92df-1ee8ed976a53">
+
+
 ## Features
 
 - Minimalistic design
