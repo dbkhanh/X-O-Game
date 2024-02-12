@@ -1,5 +1,4 @@
-# Tic-Tac-Toe
-
+# X-O Game
 ## Description
 
 This project demonstrates how to build a Tic-Tac-Toe game using Java, incorporating object-oriented programming principles to ensure a user-friendly and interactive experience.
